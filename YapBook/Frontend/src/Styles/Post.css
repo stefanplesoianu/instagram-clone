@@ -1,0 +1,161 @@
+.post-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+.like-icon {
+    color: grey;
+    cursor: pointer;
+    
+}
+
+.like-icon.liked {
+    color: red;
+}
+
+.delete-icon {
+    cursor: pointer;
+    margin-left: auto;
+    color: red;
+    height: 20px;
+    width: 20px;
+}
+
+.delete-icon:hover {
+    opacity: 0.8;
+}
+
+
+.share-icon {
+    color: grey;
+    cursor: pointer;
+}
+
+.share-icon.shared {
+    color: blue; 
+}
+
+.post-content {
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 500px;
+    flex: 1;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.author-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-username {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+.post-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    height: auto; 
+    max-height: 400px; 
+    overflow: hidden;
+}
+
+.post-image img {
+    height: auto;
+    max-width: 500px; 
+    border-radius: 5px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.post-actions .icon:hover {
+    color: #9f49b1;
+}
+
+.post-info {
+    bottom: 5%;
+    font-size: 14px;
+}
+
+.comments-section {
+    flex: 1;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.comment {
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.comment-author {
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+.comment p {
+    margin-right: auto;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.comment-actions .small-icon {
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+}
+
+.comment-actions .small-icon:hover {
+    color: #9f49b1;
+}
+
+form {
+    margin-top: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    margin-top: 5px;
+    padding: 8px 12px;
+    background-color: #9f49b1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -1,0 +1,175 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #fff;
+    border-radius: 10px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.info-section {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.user-info {
+    flex: 2;
+    margin-left: 20px;
+    padding: 10px;
+    min-height: 100px;
+}
+
+.user-stats {
+    display: flex;
+    flex-direction: column;
+}
+
+.username-edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.username-edit p {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.edit-profile-link {
+    font-size: 14px;
+    color: #74129b;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.stats-row a {
+    color: #74129b;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.user-bio {
+    font-size: 14px;
+    color: #666;
+}
+
+.posts-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.posts-section img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.posts-section img:hover {
+    transform: scale(1.05);
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.search-form {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    max-height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-form h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.search-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.search-form input:focus {
+    border-color: #74129b;
+    outline: none;
+}
+
+.search-form ul {
+    list-style: none;
+    padding: 0;
+}
+
+.search-form li {
+    margin-bottom: 10px;
+}
+
+.search-form li a {
+    text-decoration: none;
+    color: #74129b;
+    font-size: 16px;
+}
+
+.search-form li a:hover {
+    text-decoration: underline;
+}
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+    margin-left: auto;
+}
+
+.close-btn:hover {
+    color: #ff0000;
+}
