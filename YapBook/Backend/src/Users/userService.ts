@@ -1,30 +1,37 @@
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const userRepository = require('./userRepository')
-const passport = require('../passportConfig');
-const { cloudinary, extractPublicId } = require('../cloudinaryConfig');
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import * as userRepository from './userRepository';
+import passport from '../passportConfig';
+import { cloudinary, extractPublicId } from '../cloudinaryConfig';
+import { Request, Response } from 'express';
 
-exports.getAllUsers = async (currentUser) => {
+export const getAllUsers = async (currentUser: { id: number }) => {
     const currentUserId = currentUser.id || 0;
     return await userRepository.getAllUsers(currentUserId);
 };
 
-exports.searchUser = async (searchTerm) => {
+export const searchUser = async (searchTerm: string) => {
     if (!searchTerm || typeof searchTerm !== 'string') {
         throw new Error('Invalid search term');
     }
     return await userRepository.searchUser(searchTerm);
 };
 
-exports.getUser = async (userId) => {
+export const getUser = async (userId: number) => {
     if (!userId || isNaN(userId)) {
         throw new Error('Invalid user ID');
     }
     return await userRepository.getUser(userId);
 };
 
-exports.register = async (data) => {
+export const register = async (data: {
+    email: string;
+    username: string;
+    password: string;
+    confirmPassword: string;
+    imageUrl?: string;
+}) => {
     const { email, username, password, confirmPassword, imageUrl } = data;
 
     if (!email || !username || !password || !confirmPassword) {
@@ -46,27 +53,27 @@ exports.register = async (data) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const defaultImageUrl = 'https://example.com/default-profile-pic.png';
+    const defaultImageUrl = 'https://res.cloudinary.com/djdyyplbz/image/upload/v1729508109/abstract-user-flat-4_fkxupb.png';
     const userImageUrl = imageUrl || defaultImageUrl;
 
     return await userRepository.createUser(email, username, hashedPassword, userImageUrl);
 };
 
-exports.guestLogin = async () => {
+export const guestLogin = async () => {
     const guestId = crypto.randomBytes(16).toString('hex');
-    const token = jwt.sign({ guestId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ guestId }, process.env.JWT_SECRET as string, { expiresIn: '7d' });
     return token;
 };
 
-exports.login = (req, res) => {
-    passport.authenticate('local', { session: false }, (err, user, info) => {
+export const login = (req: Request, res: Response) => {
+    passport.authenticate('local', { session: false }, (err: any, user: any, info: any) => {
         if (err || !user) {
             return res.status(400).json({ message: info ? info.message : 'Authentication failed' });
         }
 
         const token = jwt.sign(
             { id: user.id, username: user.username, jti: crypto.randomBytes(16).toString('hex') },
-            process.env.JWT_SECRET,
+            process.env.JWT_SECRET as string,
             { expiresIn: '7d' }
         );
 
@@ -77,24 +84,24 @@ exports.login = (req, res) => {
     })(req, res);
 };
 
-exports.logout = async (authHeader) => {
+export const logout = async (authHeader: string | undefined) => {
     const token = authHeader ? authHeader.split(' ')[1] : null;
 
     if (!token) {
         throw new Error('No token provided');
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
     const now = Date.now() / 1000;
 
-    if (decoded.exp < now) {
+    if ((decoded as any).exp < now) {
         return { message: 'Token already expired' };
     }
 
     return await userRepository.blacklistToken(token, decoded);
 };
 
-exports.editPhoto = async (currentUser, file) => {
+export const editPhoto = async (currentUser: { id: number }, file: any) => {
     const user = await userRepository.findUserById(currentUser.id);
     if (!user) {
         throw new Error('User not found');
@@ -108,10 +115,10 @@ exports.editPhoto = async (currentUser, file) => {
         imageUrl = result.secure_url;
     }
 
-    return await userRepository.updateUserPhoto(currentUser.id, imageUrl);
+    return await userRepository.updateUserPhoto(currentUser.id, (imageUrl as any));
 };
 
-exports.deletePhoto = async (currentUser) => {
+export const deletePhoto = async (currentUser: { id: number }) => {
     const user = await userRepository.findUserById(currentUser.id);
     if (!user) {
         throw new Error('User not found');
@@ -120,22 +127,22 @@ exports.deletePhoto = async (currentUser) => {
     const publicId = extractPublicId(user.imageUrl);
     if (publicId) await cloudinary.uploader.destroy(publicId);
 
-    return await userRepository.updateUserPhoto(currentUser.id, null);
+    return await userRepository.updateUserPhoto(currentUser.id, (null as any));
 };
 
-exports.editProfile = async (currentUser, bio) => {
+export const editProfile = async (currentUser: { id: number }, bio: string) => {
     return await userRepository.updateUserBio(currentUser.id, bio);
 };
 
-exports.getFollowers = async (userId) => {
+export const getFollowers = async (userId: number) => {
     return await userRepository.getUserFollowers(userId);
 };
 
-exports.getFollowing = async (userId) => {
+export const getFollowing = async (userId: number) => {
     return await userRepository.getUserFollowing(userId);
 };
 
-exports.follow = async (followerId, followedId) => {
+export const follow = async (followerId: number, followedId: number) => {
     if (followerId === followedId) {
         throw new Error('You cannot follow yourself');
     }
@@ -164,7 +171,7 @@ exports.follow = async (followerId, followedId) => {
 
     return {
         message,
-        followersCount: updatedUser.followers.length, 
+        followersCount: (updatedUser as any).followers.length, 
         updatedUser
     };
 };

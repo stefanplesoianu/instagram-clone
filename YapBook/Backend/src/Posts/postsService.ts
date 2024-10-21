@@ -1,8 +1,9 @@
-const postsRepository = require('./postsRepository');
-const { cloudinary, extractPublicId } = require('../cloudinaryConfig');
+import { Request, Response } from 'express';
+import * as postsRepository from './postsRepository';
+import { cloudinary, extractPublicId } from '../cloudinaryConfig';
 
-exports.handleLike = async (req, res, checkOnly) => {
-    const userId = req.user.id;
+export const handleLike = async (req: Request, res: Response, checkOnly: boolean) => {
+    const userId = (req.user as any).id;
     const { id, isComment } = req.body;
     const entityId = parseInt(id, 10);
 
@@ -19,7 +20,7 @@ exports.handleLike = async (req, res, checkOnly) => {
     }
 
     const existingLike = await postsRepository.findLike(userId, entityId, isComment);
-    
+
     if (checkOnly) {
         return { status: 200, data: existingLike ? { message: 'Liked' } : { message: 'Not liked' } };
     }
@@ -33,8 +34,8 @@ exports.handleLike = async (req, res, checkOnly) => {
     }
 };
 
-exports.handleShare = async (req, res, checkOnly) => {
-    const userId = parseInt(req.user.id);
+export const handleShare = async (req: Request, res: Response, checkOnly: boolean) => {
+    const userId = parseInt((req.user as any).id);
     const postId = parseInt(req.params.postId);
 
     if (isNaN(postId) || isNaN(userId)) {
@@ -61,8 +62,8 @@ exports.handleShare = async (req, res, checkOnly) => {
     }
 };
 
-exports.getPosts = async (req, res, isUser) => {
-    const followerIds = req.body.followerIds || [];
+export const getPosts = async (req: Request, res: Response, isUser: boolean) => {
+    const followerIds: number[] = req.body.followerIds || [];
     const posts = await postsRepository.fetchAllPosts();
     const sharedPosts = await postsRepository.fetchSharedPosts();
 
@@ -74,7 +75,7 @@ exports.getPosts = async (req, res, isUser) => {
     }
 };
 
-exports.openPost = async (req, res) => {
+export const openPost = async (req: Request, res: Response) => {
     const postId = parseInt(req.params.postId, 10);
     const post = await postsRepository.findPostWithDetails(postId);
 
@@ -85,7 +86,7 @@ exports.openPost = async (req, res) => {
     return { status: 200, data: { post } };
 };
 
-exports.createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response) => {
     const { content } = req.body;
     const file = req.file;
 
@@ -93,7 +94,7 @@ exports.createPost = async (req, res) => {
         return { status: 400, data: { message: 'File needed to create post' } };
     }
 
-    const userId = req.user.id;
+    const userId = (req.user as any).id;
     const result = await cloudinary.uploader.upload(file.path, {
         folder: 'YapBookPosts',
         allowedFormats: ['jpeg', 'png', 'jpg', 'gif', 'webp']
@@ -103,7 +104,7 @@ exports.createPost = async (req, res) => {
     return { status: 201, data: post };
 };
 
-exports.editPost = async (req, res) => {
+export const editPost = async (req: Request, res: Response) => {
     const { newContent } = req.body;
     const postId = parseInt(req.params.id, 10);
 
@@ -124,9 +125,9 @@ exports.editPost = async (req, res) => {
     return { status: 200, data: editedPost };
 };
 
-exports.deletePost = async (req, res) => {
+export const deletePost = async (req: Request, res: Response) => {
     const postId = parseInt(req.params.postId);
-    
+
     if (isNaN(postId)) {
         return { status: 400, data: { message: 'Invalid post ID' } };
     }

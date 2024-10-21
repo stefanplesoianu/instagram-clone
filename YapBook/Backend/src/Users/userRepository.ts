@@ -1,13 +1,13 @@
-const prisma = require('../prisma/client');
+import prisma from '../prisma/client';
 
-exports.getAllUsers = async (currentUserId) => {
+export const getAllUsers = async (currentUserId: number) => {
     return await prisma.user.findMany({
         where: { id: { not: currentUserId } },
         select: { id: true, username: true }
     });
 };
 
-exports.searchUser = async (searchTerm) => {
+export const searchUser = async (searchTerm: string) => {
     return await prisma.user.findMany({
         where: {
             username: { contains: searchTerm, mode: 'insensitive' }
@@ -15,57 +15,57 @@ exports.searchUser = async (searchTerm) => {
     });
 };
 
-exports.getUser = async (userId) => {
+export const getUser = async (userId: number) => {
     return await prisma.user.findUnique({
         where: { id: userId },
         include: { followers: true, following: true, posts: true, shares: true }
     });
 };
 
-exports.findUserByUsername = async (username) => {
+export const findUserByUsername = async (username: string) => {
     return await prisma.user.findUnique({ where: { username } });
 };
 
-exports.findUserByEmail = async (email) => {
+export const findUserByEmail = async (email: string) => {
     return await prisma.user.findUnique({ where: { email } });
 };
 
-exports.createUser = async (email, username, password, imageUrl) => {
+export const createUser = async (email: string, username: string, password: string, imageUrl: string) => {
     return await prisma.user.create({
         data: { email, username, password, imageUrl }
     });
 };
 
-exports.blacklistToken = async (token, decoded) => {
+export const blacklistToken = async (token: string, decoded: any) => {
     return await prisma.blacklistToken.create({
         data: {
             token,
-            expiryDate: new Date(decoded.exp * 1000),
-            userId: decoded.id || null,
-            guestId: decoded.guestId || null
+            expiryDate: new Date((decoded as any).exp * 1000),
+            userId: (decoded as any).id || null,
+            guestId: (decoded as any).guestId || null
         }
     });
 };
 
-exports.findUserById = async (userId) => {
+export const findUserById = async (userId: number) => {
     return await prisma.user.findUnique({ where: { id: userId } });
 };
 
-exports.updateUserPhoto = async (userId, imageUrl) => {
+export const updateUserPhoto = async (userId: number, imageUrl: string) => {
     return await prisma.user.update({
         where: { id: userId },
         data: { imageUrl }
     });
 };
 
-exports.updateUserBio = async (userId, bio) => {
+export const updateUserBio = async (userId: number, bio: string) => {
     return await prisma.user.update({
         where: { id: userId },
         data: { bio }
     });
 };
 
-exports.getUserFollowers = async (userId) => {
+export const getUserFollowers = async (userId: number) => {
     const user = await prisma.user.findUnique({
         where: { id: userId },
         select: {
@@ -74,11 +74,11 @@ exports.getUserFollowers = async (userId) => {
             }
         }
     });
-    
+// @ts-ignore   ts kept detecting the f in the map function below
     return user ? user.followers.map(f => f.follower) : [];
 };
 
-exports.getUserFollowing = async (userId) => {
+export const getUserFollowing = async (userId: number) => {
     const user = await prisma.user.findUnique({
         where: { id: userId },
         select: {
@@ -87,15 +87,15 @@ exports.getUserFollowing = async (userId) => {
             }
         }
     });
-
+// @ts-ignore   ts kept detecting the f in the map function below
     return user ? user.following.map(f => f.user) : [];
 };
 
-exports.getUserById = async (userId) => {
+export const getUserById = async (userId: number) => {
     return await prisma.user.findUnique({ where: { id: userId } });
 };
 
-exports.getExistingFollow = async (followerId, followedId) => {
+export const getExistingFollow = async (followerId: number, followedId: number) => {
     return await prisma.userFollowing.findUnique({
         where: {
             userId_followerId: {
@@ -106,7 +106,7 @@ exports.getExistingFollow = async (followerId, followedId) => {
     });
 };
 
-exports.followUser = async (followerId, followedId) => {
+export const followUser = async (followerId: number, followedId: number) => {
     return await prisma.userFollowing.create({
         data: {
             userId: followedId,
@@ -115,7 +115,7 @@ exports.followUser = async (followerId, followedId) => {
     });
 };
 
-exports.unfollowUser = async (followerId, followedId) => {
+export const unfollowUser = async (followerId: number, followedId: number) => {
     return await prisma.userFollowing.delete({
         where: {
             userId_followerId: {
@@ -126,7 +126,7 @@ exports.unfollowUser = async (followerId, followedId) => {
     });
 };
 
-exports.getUserWithFollowers = async (userId) => {
+export const getUserWithFollowers = async (userId: number) => {
     return await prisma.user.findUnique({
         where: { id: userId },
         select: {

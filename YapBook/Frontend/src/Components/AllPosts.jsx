@@ -9,7 +9,7 @@ const AllPosts = () => {
   const [posts, setPosts] = useState([]);
   const [userSuggestions, setUserSuggestions] = useState([]);
   const [error, setError] = useState('');
-  const { user, guestId } = useContext(YapContext);
+  const { user, guestId, defaultProfileImage } = useContext(YapContext);
   const navigate = useNavigate();
 
   // useEffect for fetching posts and user suggestions
@@ -45,7 +45,7 @@ const AllPosts = () => {
             author: {
               id: post.author?.id,
               username: post.author?.username,
-              imageUrl: post.author?.imageUrl,
+              imageUrl: post.author.imageUrl || defaultProfileImage,
             },
           })),
           ...sharedPosts.map((sharedPost) => ({
@@ -211,7 +211,7 @@ const AllPosts = () => {
             userSuggestions.map(userSuggestion => (
               <div key={userSuggestion.id} className="user-suggestion">
                 <img
-                  src={userSuggestion.imageUrl}
+                  src={userSuggestion.imageUrl || defaultProfileImage}
                   alt={userSuggestion.username}
                   className="user-image"
                 />

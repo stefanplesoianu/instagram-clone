@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const differentiateUserOrGuest = require('./verifyAuth');
+
+const differentiateUserOrGuest = require('./verifyAuth'); 
 const { upload } = require('../cloudinaryConfig');
 
 const postsController = require('../Posts/postsController');
-const commentsController = require('../Comments/commentsController');
+const commentsController = require('../Comments/commentsController'); 
 
 router.post('/:postId/create-comment', differentiateUserOrGuest, commentsController.createComment);
-router.delete('/:postId/:commentId/delete-comment', differentiateUserOrGuest, commentsController.deleteComment)
+router.delete('/:postId/:commentId/delete-comment', differentiateUserOrGuest, commentsController.deleteComment);
 
 router.post('/', postsController.getUserPosts);
 router.post('/guestPosts', postsController.getGuestPosts);

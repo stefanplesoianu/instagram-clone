@@ -98,9 +98,9 @@ const EditProfile = () => {
   return (
     <form onSubmit={handleEditProfile} className="edit-profile-form">
       <div className="photo-container">
-        {profile && profile.imageUrl ? (
+        {profile ? (
           <img
-            src={profile.imageUrl}
+            src={profile.imageUrl || defaultProfileImage}
             alt={`${profile.username}'s photo`}
             className="profile-photo"
           />

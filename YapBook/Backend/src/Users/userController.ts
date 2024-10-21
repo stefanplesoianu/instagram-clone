@@ -1,17 +1,18 @@
-const userService = require('./userService');
+import { Request, Response } from 'express';
+import * as userService from './userService';
 
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const allUsers = await userService.getAllUsers(req.user);
+        const allUsers = await userService.getAllUsers(req.user as any);
         res.status(200).json(allUsers);
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong, try again' });
     }
 };
 
-exports.searchUser = async (req, res) => {
+export const searchUser = async (req: Request, res: Response) => {
     try {
-        const searchTerm = req.query.searchTerm;
+        const searchTerm = req.query.searchTerm as string;
         const users = await userService.searchUser(searchTerm);
         res.status(200).json(users);
     } catch (error) {
@@ -19,9 +20,9 @@ exports.searchUser = async (req, res) => {
     }
 };
 
-exports.getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response) => {
     try {
-        const userId = parseInt(req.params.id);
+        const userId = parseInt(req.params.id, 10);
         const user = await userService.getUser(userId);
         res.status(200).json(user);
     } catch (error) {
@@ -29,7 +30,7 @@ exports.getUser = async (req, res) => {
     }
 };
 
-exports.register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
     try {
         const newUser = await userService.register(req.body);
         res.status(200).json({ message: 'Registered successfully, please log in', user: newUser });
@@ -38,7 +39,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.guestLogin = async (req, res) => {
+export const guestLogin = async (req: Request, res: Response) => {
     try {
         const token = await userService.guestLogin();
         res.status(200).json({ message: 'Guest login successful', token });
@@ -47,49 +48,49 @@ exports.guestLogin = async (req, res) => {
     }
 };
 
-exports.login = async(req, res) => {
+export const login = async (req: Request, res: Response) => {
     userService.login(req, res);
 };
 
-exports.logout = async (req, res) => {
+export const logout = async (req: Request, res: Response) => {
     try {
-        await userService.logout(req.headers.authorization);
+        await userService.logout(req.headers.authorization as string);
         res.status(200).json({ message: 'Logout successful' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error, error' });
     }
 };
 
-exports.editPhoto = async (req, res) => {
+export const editPhoto = async (req: Request, res: Response) => {
     try {
-        const updatedProfile = await userService.editPhoto(req.user, req.file);
+        const updatedProfile = await userService.editPhoto(req.user as any, req.file);
         res.status(200).json({ message: 'Profile updated', user: updatedProfile });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong, try again' });
     }
 };
 
-exports.deletePhoto = async (req, res) => {
+export const deletePhoto = async (req: Request, res: Response) => {
     try {
-        await userService.deletePhoto(req.user);
+        await userService.deletePhoto(req.user as any);
         res.status(200).json({ message: 'Image deleted' });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong, try again' });
     }
 };
 
-exports.editProfile = async (req, res) => {
+export const editProfile = async (req: Request, res: Response) => {
     try {
-        const updatedProfile = await userService.editProfile(req.user, req.body.bio);
+        const updatedProfile = await userService.editProfile(req.user as any, req.body.bio);
         res.status(200).json({ message: 'Profile updated', user: updatedProfile });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong, try again' });
     }
 };
 
-exports.getFollowers = async (req, res) => {
+export const getFollowers = async (req: Request, res: Response) => {
     try {
-        const followers = await userService.getFollowers(parseInt(req.params.id));
+        const followers = await userService.getFollowers(parseInt(req.params.id, 10));
         res.status(200).json({ followers });
     } catch (error) {
         console.error('Error getting followers:', error);
@@ -97,9 +98,9 @@ exports.getFollowers = async (req, res) => {
     }
 };
 
-exports.getFollowing = async (req, res) => {
+export const getFollowing = async (req: Request, res: Response) => {
     try {
-        const following = await userService.getFollowing(parseInt(req.params.id));
+        const following = await userService.getFollowing(parseInt(req.params.id, 10));
         res.status(200).json({ following });
     } catch (error) {
         console.error('Error getting following:', error);
@@ -107,13 +108,13 @@ exports.getFollowing = async (req, res) => {
     }
 };
 
-exports.follow = async (req, res) => {
+export const follow = async (req: Request, res: Response) => {
     try {
         if (!req.user) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
 
-        const followerId = req.user.id;
+        const followerId = (req.user as any).id;
         const followedId = parseInt(req.params.id, 10);
 
         if (isNaN(followedId) || isNaN(followerId)) {

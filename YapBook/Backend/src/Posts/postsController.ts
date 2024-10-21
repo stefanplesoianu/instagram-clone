@@ -1,6 +1,7 @@
-const postsService = require('./postsService');
+import * as postsService from './postsService';
+import { Request, Response } from 'express';
 
-exports.likePost = async (req, res) => {
+export const likePost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.handleLike(req, res, false);
         return res.status(response.status).json(response.data);
@@ -10,7 +11,7 @@ exports.likePost = async (req, res) => {
     }
 };
 
-exports.checkLike = async (req, res) => {
+export const checkLike = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.handleLike(req, res, true);
         return res.status(response.status).json(response.data);
@@ -20,7 +21,7 @@ exports.checkLike = async (req, res) => {
     }
 };
 
-exports.sharePost = async (req, res) => {
+export const sharePost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.handleShare(req, res, false);
         return res.status(response.status).json(response.data);
@@ -30,7 +31,7 @@ exports.sharePost = async (req, res) => {
     }
 };
 
-exports.checkShare = async (req, res) => {
+export const checkShare = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.handleShare(req, res, true);
         return res.status(response.status).json(response.data);
@@ -40,7 +41,7 @@ exports.checkShare = async (req, res) => {
     }
 };
 
-exports.getGuestPosts = async (req, res) => {
+export const getGuestPosts = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.getPosts(req, res, false);
         return res.status(response.status).json(response.data);
@@ -50,7 +51,7 @@ exports.getGuestPosts = async (req, res) => {
     }
 };
 
-exports.getUserPosts = async (req, res) => {
+export const getUserPosts = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.getPosts(req, res, true);
         return res.status(response.status).json(response.data);
@@ -60,7 +61,7 @@ exports.getUserPosts = async (req, res) => {
     }
 };
 
-exports.openPost = async (req, res) => {
+export const openPost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.openPost(req, res);
         return res.status(response.status).json(response.data);
@@ -70,7 +71,7 @@ exports.openPost = async (req, res) => {
     }
 };
 
-exports.createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.createPost(req, res);
         return res.status(response.status).json(response.data);
@@ -80,7 +81,7 @@ exports.createPost = async (req, res) => {
     }
 };
 
-exports.editPost = async (req, res) => {
+export const editPost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.editPost(req, res);
         return res.status(response.status).json(response.data);
@@ -90,7 +91,7 @@ exports.editPost = async (req, res) => {
     }
 };
 
-exports.deletePost = async (req, res) => {
+export const deletePost = async (req: Request, res: Response): Promise<Response> => {
     try {
         const response = await postsService.deletePost(req, res);
         return res.status(response.status).json(response.data);

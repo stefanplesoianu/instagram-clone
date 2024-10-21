@@ -11,6 +11,8 @@ export const YapProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isFollowedByUser, setIsFollowedByUser] = useState([]); //had to move this here to prevent state update issues
     const [error, setError] = useState(null);
+    //needed a default image because it disappeared a couple of times from my DB
+    const defaultProfileImage = 'https://res.cloudinary.com/djdyyplbz/image/upload/v1729508109/abstract-user-flat-4_fkxupb.png';
 
     useEffect(() => {
         //check memory for tokens
@@ -80,6 +82,7 @@ export const YapProvider = ({ children }) => {
             guestId, 
             currentUser, 
             isFollowedByUser, 
+            defaultProfileImage,
             handleLogin, 
             handleLogout, 
             handleGuestLogin, 

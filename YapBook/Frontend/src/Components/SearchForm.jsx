@@ -9,7 +9,7 @@ const SearchForm = ({ people, title, closeSearchForm, followedIds }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { user, fetchCurrentUser } = useContext(YapContext); // fetch current user to refresh followed state if needed
+  const { user, fetchCurrentUser, defaultProfileImage } = useContext(YapContext); // fetch current user to refresh followed state if needed
 
   useEffect(() => {
     if (!searchTerm) {
@@ -102,7 +102,7 @@ const SearchForm = ({ people, title, closeSearchForm, followedIds }) => {
         searchResults.map((person) => (
           <div key={person.id} className="user-info">
             <img
-              src={person.imageUrl}
+              src={person.imageUrl || defaultProfileImage}
               alt={person.username}
               className="user-image"
             />

@@ -1,14 +1,15 @@
-const prisma = require('../prisma/client');
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 
-exports.findCommentById = async (id) => {
+export const findCommentById = async (id: number) => {
     return await prisma.comment.findUnique({ where: { id } });
 };
 
-exports.findPostById = async (id) => {
+export const findPostById = async (id: number) => {
     return await prisma.post.findUnique({ where: { id } });
 };
 
-exports.findLike = async (userId, entityId, isComment) => {
+export const findLike = async (userId: number, entityId: number, isComment: boolean) => {
     return await prisma.like.findUnique({
         where: {
             ...(isComment
@@ -18,7 +19,7 @@ exports.findLike = async (userId, entityId, isComment) => {
     });
 };
 
-exports.addLike = async (userId, entityId, isComment) => {
+export const addLike = async (userId: number, entityId: number, isComment: boolean) => {
     return await prisma.like.create({
         data: {
             userId,
@@ -27,7 +28,7 @@ exports.addLike = async (userId, entityId, isComment) => {
     });
 };
 
-exports.removeLike = async (userId, entityId, isComment) => {
+export const removeLike = async (userId: number, entityId: number, isComment: boolean) => {
     return await prisma.like.delete({
         where: {
             ...(isComment
@@ -37,7 +38,7 @@ exports.removeLike = async (userId, entityId, isComment) => {
     });
 };
 
-exports.findShare = async (userId, postId) => {
+export const findShare = async (userId: number, postId: number) => {
     return await prisma.share.findUnique({
         where: {
             userId_postId: {
@@ -48,7 +49,7 @@ exports.findShare = async (userId, postId) => {
     });
 };
 
-exports.addShare = async (userId, postId) => {
+export const addShare = async (userId: number, postId: number) => {
     return await prisma.share.create({
         data: {
             userId,
@@ -57,7 +58,7 @@ exports.addShare = async (userId, postId) => {
     });
 };
 
-exports.removeShare = async (userId, postId) => {
+export const removeShare = async (userId: number, postId: number) => {
     return await prisma.share.delete({
         where: {
             userId_postId: {
@@ -68,7 +69,7 @@ exports.removeShare = async (userId, postId) => {
     });
 };
 
-exports.fetchAllPosts = async () => {
+export const fetchAllPosts = async () => {
     return await prisma.post.findMany({
         include: {
             comments: {
@@ -91,7 +92,7 @@ exports.fetchAllPosts = async () => {
     });
 };
 
-exports.fetchSharedPosts = async () => {
+export const fetchSharedPosts = async () => {
     return await prisma.share.findMany({
         select: {
             id: true,
@@ -137,12 +138,12 @@ exports.fetchSharedPosts = async () => {
     });
 };
 
-exports.fetchRandomUsers = async (followerIds) => {
+export const fetchRandomUsers = async (followerIds: number[]) => {
     try {
         return await prisma.user.findMany({
             where: {
                 id: {
-                    notIn: followerIds.length > 0 ? followerIds : [], // Exclude followers and current user
+                    notIn: followerIds.length > 0 ? followerIds : [],
                 },
             },
             select: {
@@ -161,7 +162,7 @@ exports.fetchRandomUsers = async (followerIds) => {
     }
 };
 
-exports.findPostWithDetails = async (postId) => {
+export const findPostWithDetails = async (postId: number) => {
     return await prisma.post.findUnique({
         where: { id: postId },
         include: {
@@ -177,7 +178,7 @@ exports.findPostWithDetails = async (postId) => {
     });
 };
 
-exports.createPost = async (userId, content, imageUrl) => {
+export const createPost = async (userId: number, content: string, imageUrl: string) => {
     return await prisma.post.create({
         data: {
             content,
@@ -187,19 +188,19 @@ exports.createPost = async (userId, content, imageUrl) => {
     });
 };
 
-exports.updatePost = async (postId, newContent) => {
+export const updatePost = async (postId: number, newContent: string) => {
     return await prisma.post.update({
         where: { id: postId },
         data: { content: newContent }
     });
 };
 
-exports.deleteRelatedData = async (postId) => {
+export const deleteRelatedData = async (postId: number) => {
     await prisma.comment.deleteMany({ where: { postId } });
     await prisma.like.deleteMany({ where: { postId } });
     await prisma.share.deleteMany({ where: { postId } });
 };
 
-exports.deletePost = async (postId) => {
+export const deletePost = async (postId: number) => {
     return await prisma.post.delete({ where: { id: postId } });
 };

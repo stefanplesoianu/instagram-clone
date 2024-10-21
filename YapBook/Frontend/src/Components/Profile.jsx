@@ -7,7 +7,7 @@ import "../Styles/Profile.css";
 
 const Profile = () => {
   const { id } = useParams(); // get user ID from search parameters to compare against user.id
-  const { user, currentUser, isFollowedByUser, fetchCurrentUser, error: contextError } = useContext(YapContext);
+  const { defaultProfileImage, user, currentUser, isFollowedByUser, fetchCurrentUser, error: contextError } = useContext(YapContext);
   const [person, setPerson] = useState(null);
   const [followersData, setFollowersData] = useState([]);
   const [followingData, setFollowingData] = useState([]);
@@ -103,7 +103,7 @@ const Profile = () => {
     <div className="profile-container">
       <div className="info-section">
         <div className="profile-photo">
-          <img src={person.imageUrl} alt={person.username} />
+          <img src={person.imageUrl || defaultProfileImage} alt={person.username} />
         </div>
         <div className="user-info">
           <div className="user-stats">

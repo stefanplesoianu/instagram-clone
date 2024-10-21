@@ -7,7 +7,7 @@ import { YapContext } from './Context';
 
 const Post = () => {
     const { postId } = useParams();
-    const { user } = useContext(YapContext);
+    const { user, defaultProfileImage } = useContext(YapContext);
     const navigate = useNavigate();
     const [post, setPost] = useState(null);
     const [author, setAuthor] = useState(null);
@@ -125,7 +125,7 @@ const Post = () => {
                 <div className="post-header">
                     {author ? (
                         <>
-                            <img src={author.imageUrl} alt={author.username} className="author-image" />
+                            <img src={author.imageUrl || defaultProfileImage} alt={author.username} className="author-image" />
                             <Link to={`/profile/${author.id}`} className="author-username">{author.username}</Link>
                             {post.authorId === user?.id && (  // only the author can delete the post
                                 <FaTrash onClick={handleDeletePost} className="delete-icon" /> 
