@@ -12,6 +12,8 @@ Some of the key features of the project are:
 - Cloudinary for image uploads
 - Error handling across all layers
 
+Both backends and the frontend contain minimal tests for various functionalities. I've used Selenium, Cucumber and Cypress in order to write and run the tests, just to gain practice with these pieces of software. The README.md of each component (backends and frontend) contains more information about the tests.
+ 
 ## Notes:
 - The project backend contains the Prisma schema file for database table generation, but I used a locally installed Postgres so the information there is not present in this repo. Will have to `npm install` the project if forked and run `npx prisma generate` to apply the Prisma database configuration.
 - `.env` is missing so the JavaScript backend will need an `.env` file for the JWT secret (run backend with `npm start`).
